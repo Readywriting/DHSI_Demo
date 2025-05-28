@@ -6,10 +6,17 @@ let direction = 1;
 let trail = [];
 let clouds = [];
 
+// Jump variables
+let velocityY = 0;
+let gravity = 0.5;
+let jumpPower = -12;
+let groundLevel;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  groundLevel = height * 0.7;
   pelicanX = 0;
-  pelicanY = height * 0.7;
+  pelicanY = groundLevel;
   speedX = 2;
 
   // Create initial clouds
@@ -40,6 +47,16 @@ function draw() {
 
   // update pelican position
   pelicanX += speedX * direction;
+
+  // Apply gravity and jumping physics
+  velocityY += gravity;
+  pelicanY += velocityY;
+  
+  // Keep pelican on ground
+  if (pelicanY > groundLevel) {
+    pelicanY = groundLevel;
+    velocityY = 0;
+  }
 
   // Add trail puff
   trail.push({ x: pelicanX, y: pelicanY + 35, alpha: 255 });
@@ -129,5 +146,10 @@ function keyPressed() {
     direction = -1;
   } else if (keyCode === RIGHT_ARROW) {
     direction = 1;
+  } else if (keyCode === 32) { // Space bar
+    // Only jump if on ground
+    if (pelicanY >= groundLevel) {
+      velocityY = jumpPower;
+    }
   }
 }
