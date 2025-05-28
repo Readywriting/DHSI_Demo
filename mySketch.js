@@ -123,3 +123,11 @@ function drawPelicanOnBike(x, y) {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    direction = -1;
+  } else if (keyCode === RIGHT_ARROW) {
+    direction = 1;
+  }
+}
